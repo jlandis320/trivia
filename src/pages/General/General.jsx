@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getGenQuestions } from "../../services/api-calls";
 
 const General = () => {
   const navigate = useNavigate()
-  // const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchQuestions = async () => {
-  //     const questionData = await getGenQuestions();
-  //     setQuestions(questionData.results);
-  //   };
-  //   fetchQuestions();
-  // }, []);
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      const questionData = await getGenQuestions();
+      setQuestions(questionData.results);
+    };
+    fetchQuestions();
+  }, []);
 
   return (
     <>
