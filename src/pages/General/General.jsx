@@ -1,3 +1,4 @@
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +8,7 @@ const General = () => {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
 
-  
+  // state stores the question data from OpenTrivia DB
   useEffect(() => {
     const fetchQuestions = async () => {
       const questionData = await getGenQuestions();
@@ -16,22 +17,18 @@ const General = () => {
     fetchQuestions(); 
   }, []);
   
+  // combine the correct answer and the incorrect answers together and mix them up
   let shuffledAnswers = questions.map(question => {
-    let answerArray = [question.incorrect_answers[0], question.correct_answer, question.incorrect_answers[1], question.incorrect_answers[2]] 
+    let answerArray = [question.correct_answer, question.incorrect_answers[0], question.incorrect_answers[1], question.incorrect_answers[2]] 
     return shuffle(answerArray)
   })
+
   // Fisher-Yates shuffle to mix up answer options
   function shuffle(array) {
-    var m = array.length,
-      t,
-      i;
+    var m = array.length, t, i;
 
-    // While there remain elements to shuffle…
     while (m) {
-      // Pick a remaining element…
       i = Math.floor(Math.random() * m--);
-
-      // And swap it with the current element.
       t = array[m];
       array[m] = array[i];
       array[i] = t;
@@ -39,30 +36,36 @@ const General = () => {
     return array;
   }
 
+  // construct new obj consisting  of question, correct answer, and answer options
   let questionObj = questions.map((question, i) => {
     return {
-    "question": question.question, 
-    "correct_answer": question.correct_answer, 
-    "answer_options": shuffledAnswers[i]
+    question: question.question, 
+    correctAnswer: question.correct_answer, 
+    answerOptions: shuffledAnswers[i]
   }
   })
-  console.log(questionObj)
+
+  let answerKey = questions.map(question => question.correct_answer)
+  console.log("answer key", answerKey)
+
+  function checkAnswer(evt){
+    let selection = evt.target.innerHTML
+    return answerKey.includes(selection) ? console.log("correct!") : console.log("incorrect!")
+  }
 
   return (
     <>
       <h1>I'm the general page</h1>
       <button onClick={() => navigate(-1)}>Go Back</button>
-      <section>
         {questionObj.map((question, idx) => (
           <section key={idx}>
             <h3>{question.question}</h3>
-            <button>{question.answer_options[0]}</button>
-            <button>{question.answer_options[1]}</button>
-            <button>{question.answer_options[2]}</button>
-            <button>{question.answer_options[3]}</button>
+            <button onClick={checkAnswer}>{question.answerOptions[0]}</button>
+            <button onClick={checkAnswer}>{question.answerOptions[1]}</button>
+            <button onClick={checkAnswer}>{question.answerOptions[2]}</button>
+            <button onClick={checkAnswer}>{question.answerOptions[3]}</button>
           </section>
         ))}
-      </section>
     </>
   );
 };
