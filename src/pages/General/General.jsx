@@ -45,12 +45,17 @@ const General = () => {
   }
   })
 
+  // collects all the correct answers into one array
   let answerKey = questions.map(question => question.correct_answer)
-  console.log("answer key", answerKey)
 
+  // check answer against answersheet
   function checkAnswer(evt){
     let selection = evt.target.innerHTML
-    return answerKey.includes(selection) ? console.log("correct!") : console.log("incorrect!")
+    if (answerKey.includes(selection)){
+      console.log("correct!")
+    } else {
+    console.log("incorrect!")
+    }
   }
 
   return (
@@ -60,10 +65,10 @@ const General = () => {
         {questionObj.map((question, idx) => (
           <section key={idx}>
             <h3>{question.question}</h3>
-            <button onClick={checkAnswer}>{question.answerOptions[0]}</button>
-            <button onClick={checkAnswer}>{question.answerOptions[1]}</button>
-            <button onClick={checkAnswer}>{question.answerOptions[2]}</button>
-            <button onClick={checkAnswer}>{question.answerOptions[3]}</button>
+            <button className="answerBtn" onClick={checkAnswer}>{question.answerOptions[0]}</button>
+            <button className="answerBtn" onClick={checkAnswer}>{question.answerOptions[1]}</button>
+            <button className="answerBtn"onClick={checkAnswer}>{question.answerOptions[2]}</button>
+            <button className="answerBtn" onClick={checkAnswer}>{question.answerOptions[3]}</button>
           </section>
         ))}
     </>
