@@ -52,9 +52,11 @@ const General = () => {
   function checkAnswer(evt){
     let selection = evt.target.innerHTML
     if (answerKey.includes(selection)){
+      evt.preventDefault()
+      evt.target.style.backgroundColor = "green"
       console.log("correct!")
     } else {
-    console.log("incorrect!")
+      console.log("incorrect!")
     }
   }
 
@@ -65,10 +67,10 @@ const General = () => {
         {questionObj.map((question, idx) => (
           <section key={idx}>
             <h3>{question.question}</h3>
-            <button className="answerBtn" onClick={checkAnswer}>{question.answerOptions[0]}</button>
-            <button className="answerBtn" onClick={checkAnswer}>{question.answerOptions[1]}</button>
-            <button className="answerBtn"onClick={checkAnswer}>{question.answerOptions[2]}</button>
-            <button className="answerBtn" onClick={checkAnswer}>{question.answerOptions[3]}</button>
+            <button disabled={false} className="answerBtn" onClick={checkAnswer}>{question.answerOptions[0]}</button>
+            <button disabled={false}  className="answerBtn" onClick={checkAnswer}>{question.answerOptions[1]}</button>
+            <button disabled={false}  className="answerBtn"onClick={checkAnswer}>{question.answerOptions[2]}</button>
+            <button disabled={false}  className="answerBtn" onClick={checkAnswer}>{question.answerOptions[3]}</button>
           </section>
         ))}
     </>
