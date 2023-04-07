@@ -1,12 +1,14 @@
-import { isDisabled } from "@testing-library/user-event/dist/utils";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import '../../App.css';
+
 
 import { getGenQuestions } from "../../services/api-calls";
 
 const General = () => {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
+  const [isCorrect, setCorrect] = useState(false)
 
   // state stores the question data from OpenTrivia DB
   useEffect(() => {
@@ -52,8 +54,7 @@ const General = () => {
   function checkAnswer(evt){
     let selection = evt.target.innerHTML
     if (answerKey.includes(selection)){
-      evt.preventDefault()
-      evt.target.style.backgroundColor = "green"
+      setCorrect(true)
       console.log("correct!")
     } else {
       console.log("incorrect!")
@@ -67,10 +68,10 @@ const General = () => {
         {questionObj.map((question, idx) => (
           <section key={idx}>
             <h3>{question.question}</h3>
-            <button disabled={false} className="answerBtn" onClick={checkAnswer}>{question.answerOptions[0]}</button>
-            <button disabled={false}  className="answerBtn" onClick={checkAnswer}>{question.answerOptions[1]}</button>
-            <button disabled={false}  className="answerBtn"onClick={checkAnswer}>{question.answerOptions[2]}</button>
-            <button disabled={false}  className="answerBtn" onClick={checkAnswer}>{question.answerOptions[3]}</button>
+            <button disabled={false} className={`answerBtn ${isCorrect ? "correct" : ""}`} onClick={checkAnswer}>{question.answerOptions[0]}</button>
+            <button disabled={false}  className={`answerBtn ${isCorrect ? "correct" : ""}`} onClick={checkAnswer}>{question.answerOptions[1]}</button>
+            <button disabled={false}  className={`answerBtn ${isCorrect ? "correct" : ""}`} onClick={checkAnswer}>{question.answerOptions[2]}</button>
+            <button disabled={false}  className={`answerBtn ${isCorrect ? "correct" : ""}`} onClick={checkAnswer}>{question.answerOptions[3]}</button>
           </section>
         ))}
     </>
